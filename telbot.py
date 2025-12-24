@@ -1,7 +1,7 @@
 import logging
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-import json
+import json ,sqlite3
 from telegram import ForceReply, Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",level=logging.INFO)
@@ -84,7 +84,7 @@ async def price_btc(update: Update, context: ContextTypes.DEFAULT_TYPE)->None:
 
 def main()->None:
     """Start the bot."""
-    application=Application.builder().token("8006422248:AAHqRVrMOhcbrWlzBrYN-2X8jfWSHKnp28g").build()
+    application=Application.builder().token("token").build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("end", end))
