@@ -23,8 +23,9 @@ print(dir(Update.effective_user))
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /start is issued."""
     user = update.effective_user
-    cur.execute(f"INSERT INTO users VALUES ('{user.id}','{user.full_name}','{user.username}')")
-    cn.commit()
+    if 1 not in cn.execute("select 1 from users where id=?",(str(user.id,))).fetchone():
+        cur.execute(f"INSERT INTO users VALUES ('{user.id}','{user.full_name}','{user.username}')")
+        cn.commit()
    
     await update.message.reply_html(
         rf"Hi {user.mention_html()}!",
