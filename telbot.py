@@ -4,6 +4,8 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json ,sqlite3
 from telegram import ForceReply, Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
+cn=sqlite3.connect("data.db")
+cur=cn.cursor()
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",level=logging.INFO)
 logging.getLogger("httpx").setLevel(logging.WARNING)
 logger=logging.getLogger(__name__)
@@ -17,17 +19,13 @@ logger=logging.getLogger(__name__)
     
 
 #     await update.message.reply_html(rf"Hi {user.mention_html()}!",reply_markup=ForceReply(selective=True),)
-
-
+print(dir(Update.effective_user))
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /start is issued."""
     user = update.effective_user
-    f1 = open("users.txt", "r", encoding="utf-8").read() + user.username + ","
-    f2 = open("users.txt", "w", encoding="utf-8")
-    
-    f2.write(f1)
-    f2.close()
-    
+    cur.execute(f"INSERT INTO users VALUES ('{user.id}','{user.full_name}','{user.username}')")
+    cn.commit()
+   
     await update.message.reply_html(
         rf"Hi {user.mention_html()}!",
         reply_markup=ForceReply(selective=True),
@@ -84,7 +82,7 @@ async def price_btc(update: Update, context: ContextTypes.DEFAULT_TYPE)->None:
 
 def main()->None:
     """Start the bot."""
-    application=Application.builder().token("token").build()
+    application=Application.builder().token("8022032775:AAF61Tn-ilBuv2t5wg2yA5MlFDzbu4FEd5A").build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("end", end))
