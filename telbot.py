@@ -83,7 +83,7 @@ async def price_btc(update: Update, context: ContextTypes.DEFAULT_TYPE)->None:
 
 def main()->None:
     """Start the bot."""
-    application=Application.builder().token("8022032775:AAF61Tn-ilBuv2t5wg2yA5MlFDzbu4FEd5A").build()
+    application=Application.builder().token("your token").build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("end", end))
